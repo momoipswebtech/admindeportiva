@@ -10,18 +10,19 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('test', function(){
-	$user = auth()->user();
-	if ($user->is_admin()) {
-		dd('Es administrador');
-	}else{
-		dd('no es administrador');
-	}
+Route::get('/', function(){
+	return view('welcome');
 });
+
+Route::get('home', function(){
+	return view('home');
+})->middleware('auth');
+
 Auth::routes(['verify' => true]);
 
 //backoffice
 Route::group(['middleware' => ['auth'], 'as' => 'backoffice.' ], function(){
+	Route::get('admin','AdminController@show')->name('admin.show');
 	Route::resource('user', 'UserController');
 	Route::get('user/{user}/assign_role', 'UserController@assign_role')->name('user.assign_role');
 	Route::post('user/{user}/role_assignment', 'UserController@role_assignment')->name('user.role_assignment');

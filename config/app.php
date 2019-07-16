@@ -2,6 +2,7 @@
 
 return [
     'admin_role' => env('ADMIN_ROLE', 'admin'),
+    'player_role' => env('PLAYER_ROLE','jugador'),
     /*
     |--------------------------------------------------------------------------
     | Application Name
