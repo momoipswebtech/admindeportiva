@@ -17,7 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'dob', 'email', 'password',
     ];
 
     /**
@@ -50,12 +50,23 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     //Almacenamiento
-    /*almacenamiento de los roles en la base de datos*/
-    public function role_assignment($request)
+    /*Funcion de almacenamiento de usuarios*/
+    public function store($request)
     {
-        $this->permission_mass_assignment($request->roles);
-        $this->roles()->sync($request->roles);
-        $this->verify_permission_integrity($request->roles);
+        $user = self::create($request->all());
+        $roles = [$request->role];
+        $user->role_assignment(null, $roles);
+        alert('Éxito','Usuario creado con éxito','success');
+        return $user;
+
+    }
+    /*almacenamiento de los roles en la base de datos*/
+    public function role_assignment($request, array $roles = null)
+    {
+        $roles = (is_null($roles)) ? $request->roles : $roles;
+        $this->permission_mass_assignment($roles);
+        $this->roles()->sync($roles);
+        $this->verify_permission_integrity($roles);
         alert('Éxito','Roles asignados','success');
         
     }

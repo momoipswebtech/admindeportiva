@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Role;
 
+use App\Http\Requests\User\StoreRequest;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -39,9 +40,10 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request, User $user)
     {
-        dd($request);
+        $user = $user->store($request);
+        return redirect()->route('backoffice.user.show', $user);
     }
 
     /**
