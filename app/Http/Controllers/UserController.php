@@ -6,6 +6,7 @@ use App\User;
 use App\Role;
 
 use App\Http\Requests\User\StoreRequest;
+use App\Http\Requests\User\UpdateRequest;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -65,9 +66,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        return view('theme.backoffice.pages.user.edit',[
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -77,9 +80,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, User $user)
     {
-        //
+        $user->my_update($request);
+        return redirect()->route('backoffice.user.show', $user);
     }
 
     /**

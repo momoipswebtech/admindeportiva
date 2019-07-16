@@ -2,7 +2,7 @@
 
 namespace App;
 
-
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -29,6 +29,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'password', 'remember_token',
     ];
 
+    protected $dates =['dob'];
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -54,11 +56,18 @@ class User extends Authenticatable implements MustVerifyEmail
     public function store($request)
     {
         $user = self::create($request->all());
+        $user ->update(['password'=> Hash::make($request->password)]);
         $roles = [$request->role];
         $user->role_assignment(null, $roles);
         alert('Éxito','Usuario creado con éxito','success');
         return $user;
 
+    }
+    /*Este metodo guarda la actualizacion de la informacion de un usuario*/
+    public function my_update($request)
+    {
+        self::update($request->all());
+        alert('Éxito','Usuario actualizado','success');
     }
     /*almacenamiento de los roles en la base de datos*/
     public function role_assignment($request, array $roles = null)
@@ -100,7 +109,18 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     //Recuperación de información
-
+    /*Funcion de mostrar edad en el index de usuarios*/
+    public function age()
+    {
+        if(!is_null($this->dob)){
+           $age = $this->dob->age;
+           $years = ($age == 1) ? 'año' : 'años';
+           $msj = $age . ' ' . $years;
+       }else{
+        $msj = 'indefinido';
+       }
+        return $msj;
+    }
     //Otras operaciones
     /* verifica la integridad de los datos*/
     public function verify_permission_integrity(array $roles)
