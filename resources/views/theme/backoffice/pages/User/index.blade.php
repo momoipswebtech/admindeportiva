@@ -13,6 +13,7 @@
 @section('dropdown_settings')
 {{-- <li><a href=""></a></li> --}}
 <li><a href="{{ route('backoffice.user.create') }}" class="grey-text text-darken-2">Crear Usuario</a></li>
+<li><a href="{{ route('backoffice.user.import') }}" class="grey-text text-darken-2">Importar Usuario</a></li>
 @endsection
 
 @section('content')

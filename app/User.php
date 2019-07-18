@@ -99,6 +99,14 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         return false;
     }
+
+    public function has_any_role(array $roles)
+    {
+        foreach ($roles as $role) {
+            if($this->has_role($role)) return true;
+        }
+        return false;
+    }
     /**Valida la asignacion de permisos al usuario*/
     public function has_permission($id)
     {
